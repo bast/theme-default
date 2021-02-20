@@ -22,6 +22,7 @@ function fish_prompt
   set -l normal_color     (set_color normal)
   set -l directory_color  (set_color $fish_color_quote 2> /dev/null; or set_color brown)
   set -l repository_color (set_color $fish_color_cwd 2> /dev/null; or set_color green)
+  set -l hostname_color   (set_color red)
 
   if git_is_repo
     if test "$theme_short_path" = 'yes'
@@ -30,7 +31,7 @@ function fish_prompt
       set cwd (echo $PWD | sed -e "s|$parent_root_folder/||")
     end
 
-    echo -n -s $directory_color $cwd $normal_color
+    echo -n -s $hostname_color (hostname): $directory_color $cwd $normal_color
     echo -n -s " on " $repository_color (git_branch_name) $normal_color
 
     if git_is_touched
@@ -39,7 +40,7 @@ function fish_prompt
       echo -n -s (git_ahead $ahead $behind $diverged $none)
     end
   else
-    echo -n -s $directory_color $cwd $normal_color
+    echo -n -s $hostname_color (hostname): $directory_color $cwd $normal_color
   end
 
   echo -s \n "\$ "
